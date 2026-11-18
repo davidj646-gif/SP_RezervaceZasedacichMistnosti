@@ -4,7 +4,6 @@ namespace DataEntity
 {
     public static class Enums
     {
-
         public enum MistnostTyp
         {
             [Description("Malá")]

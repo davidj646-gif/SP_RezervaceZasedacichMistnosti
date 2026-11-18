@@ -8,9 +8,14 @@ namespace DataEntity
 
         #region "validace"
 
-        // Chyba celého objektu – WPF ji čte jen při validaci celého řádku (BindingGroup).
-        // Nesmí vyhazovat výjimku, jinak taková validace shodí aplikaci.
-        string IDataErrorInfo.Error => string.Empty;
+            string IDataErrorInfo.Error
+        {
+            get
+            {
+                //return null;
+                throw new NotSupportedException("IDataErrorInfo.Error is not supported, use IDataErrorInfo.this[propertyName] instead.");
+            }
+        }
 
         string IDataErrorInfo.this[string propertyName] => OnValidate(propertyName);
 
