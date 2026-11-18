@@ -1,14 +1,21 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace DataEntity
+namespace DataEntity.Data.Base
 {
     public abstract class BaseModel : IDataErrorInfo
     {
 
         #region "validace"
 
-            string IDataErrorInfo.Error
+        string IDataErrorInfo.Error
         {
             get
             {
@@ -17,20 +24,24 @@ namespace DataEntity
             }
         }
 
-        string IDataErrorInfo.this[string propertyName] => OnValidate(propertyName);
+        string IDataErrorInfo.this[string propertyName]
+        {
+            get
+            {
+                // return null;
+                return OnValidate(propertyName);
+            }
+        }
 
 
 
         protected virtual string OnValidate(string propertyName)
         {
             if (string.IsNullOrEmpty(propertyName))
-                throw new ArgumentException("Neplatný název vlastnosti", nameof(propertyName));
+                throw new ArgumentException("Invalid property name", propertyName);
 
-            var property = GetType().GetProperty(propertyName);
-            if (property == null)
-                return string.Empty;
-
-            var value = property.GetValue(this, null);
+            string error = string.Empty;
+            var value = this.GetType().GetProperty(propertyName).GetValue(this, null);
             var results = new List<ValidationResult>(1);
 
             var context = new ValidationContext(this, null, null) { MemberName = propertyName };
@@ -39,14 +50,15 @@ namespace DataEntity
 
             if (!result)
             {
-                return results.First().ErrorMessage ?? string.Empty;
+                var validationResult = results.First();
+                error = validationResult.ErrorMessage;
             }
 
-            return string.Empty;
+            return error;
         }
 
         /// <summary>Vrátí všechny validační výsledky pro celý objekt (všechny vlastnosti).</summary>
-        protected IReadOnlyList<ValidationResult> ValidateAll()
+        public IReadOnlyList<ValidationResult> ValidateAll()
         {
             var results = new List<ValidationResult>();
             var context = new ValidationContext(this);
@@ -65,11 +77,10 @@ namespace DataEntity
 
         #endregion
 
-        // Hodnotu generuje SQL Server (rowversion) – EF ji při INSERTu neposílá
         [Timestamp]
-        public byte[] RowVersion { get; set; } = Array.Empty<byte>();
+        public byte[] RowVersion { get; set; }
 
-        public DateTime DatumVytvoreni { get; set; } = DateTime.Now;
+        public DateTime Datum { get; set; }
 
     }
 }
