@@ -1,8 +1,10 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net10.0</TargetFramework>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <IntermediateOutputPath>..\obj\$(Configuration)\$(TargetFramework)\</IntermediateOutputPath>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
@@ -28,6 +30,10 @@
     <Folder Include="ViewModels\" />
     <Folder Include="Views\" />
     <Folder Include="Styles\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="SP_RezervaceZasedacichMistosti.csproj" />
   </ItemGroup>
 
 </Project>

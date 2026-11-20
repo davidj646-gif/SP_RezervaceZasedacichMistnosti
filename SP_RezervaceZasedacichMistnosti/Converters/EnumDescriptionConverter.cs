@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Globalization;
 using System.Reflection;
+using System.Windows.Data;
 
 namespace SP_RezervaceZasedacichMistnosti.Converters
 {
@@ -32,5 +33,10 @@ namespace SP_RezervaceZasedacichMistnosti.Converters
             // Fallback, pokud není atribut
             return attrib?.Description ?? enumObj.ToString();
         }
+    }
+    public class LocalTimeConverter : IValueConverter //doplněno aby fungoval Converters.xaml ve složce Styles
+    {
+        public object Convert(object value, Type t, object p, CultureInfo c) => value is DateTime d ? DateTime.SpecifyKind(d, DateTimeKind.Utc).ToLocalTime().ToString("dd.MM.yyyy HH:mm") : "";
+        public object ConvertBack(object v, Type t, object p, CultureInfo c) => Binding.DoNothing;
     }
 }

@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using System.Windows;
+using System.Windows.Media;
 
 namespace SP_RezervaceZasedacichMistnosti.Globals
 {

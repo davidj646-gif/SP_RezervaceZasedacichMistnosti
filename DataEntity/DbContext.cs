@@ -16,13 +16,13 @@ namespace DataEntity
             {optionsBuilder.
                     UseSqlServer(
                         "Data Source=(localdb)\\MSSQLLocalDB;" +
-                        "Database=RezervaceZasedacichMistnosti" +
-                        "Integrated Security=true" +
+                        "Database=RezervaceZasedacichMistnosti;" +
+                        "Integrated Security=true;" +
                         "TrustServerCertificate=true")
                     .UseLazyLoadingProxies();
             }
         }
-        protected override void OnModelCreating(ModelBuilder b)
+        /*protected override void OnModelCreating(ModelBuilder b)
         {
             b.Entity<Mistnosti>().ToTable("Mistnosti", t => t.HasCheckConstraint("CK_Mistnosti_Kapacita", "[Kapacita] > 0"));
             b.Entity<Zamestnanci>().ToTable("Zamestnanci");
@@ -43,7 +43,7 @@ namespace DataEntity
                 b.Entity<Zamestnanci>().Ignore(x => x.RowVersion);
                 b.Entity<Rezervace>().Ignore(x => x.RowVersion);
             }
-        }
+        }*/ //celá tato část je SQL (případně část z toho lze využít)!!!!!!!!!!
             private void ValidateChanges()
             {
                 ChangeTracker.DetectChanges();
